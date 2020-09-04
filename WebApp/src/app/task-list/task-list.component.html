@@ -1,0 +1,55 @@
+<div class="card" style="margin-top: 1em">
+    <div class="card-header">
+        <div class="row" style="align-items: center;">
+            <div class="col-6">
+                <strong>Tasks</strong>
+            </div>
+            <div class="col-6" style="text-align: right;">
+                <button class="btn btn-link" (click)="Refresh()">
+                    <shared-reload></shared-reload>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" style="padding-bottom: 1em;">
+        <div class="card-text" *ngIf="allTasks.isEmpty">
+            <div class="row">
+                <div class="col-12" style="text-align: center;">
+                    Nessun task trovato.
+                </div>
+            </div>
+        </div>
+        <div class="card-text" *ngIf="!allTasks.isEmpty">
+            <div class="row" style="align-items: center; padding-bottom: 1em" *ngFor="let task of allTasks">
+                <div class="col-7 col-lg-9">
+                    {{task.GitAction.Icon}}&nbsp;
+                    <strong>
+                        {{task.Category}}
+                    </strong>
+                    &nbsp;{{task.Description}}
+                </div>
+
+                <div class="col-3 col-lg-2" style="text-align: center;">
+                    {{task.Timestamp | date:'HH:mm:ss'}}
+                </div>
+
+                <div class="col-2 col-lg-1">
+                    <button class="btn btn-danger" style="width:100%" (click)="DeleteTask(task)">
+                        <shared-trash></shared-trash>
+                    </button>
+                </div>
+            </div>
+            <div class="row" *ngIf="thereAreMoreTasks">
+                <div class="col-12" style="text-align: center;">
+                    <button class="btn btn-link" (click)="GetMoreTasks()" *ngIf="isLoading == false">
+                        Carica altri...
+                    </button>
+                    <div *ngIf="isLoading" class="spinner-grow text-primary" style="width: 3rem; height: 3rem;"
+                        role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

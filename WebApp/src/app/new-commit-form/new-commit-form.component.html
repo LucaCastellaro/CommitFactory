@@ -1,0 +1,94 @@
+<div class="accordion" id="accordion">
+  <div class="card">
+
+    <!-- Collapse / expand -->
+    <div class="card-header" id="heading">
+      <button class="btn btn-link btn-sm" type="button" data-toggle="collapse" data-target="#collapse"
+        aria-expanded="true" aria-controls="collapse" (click)="TogglePanelExpansion()">
+
+        <!-- Collapse -->
+        <shared-chevron-up *ngIf="isPanelExpanded" data-toggle="collapse" data-target="#collapse" aria-expanded="true"
+          aria-controls="collapse"></shared-chevron-up>
+
+        <!-- Expand -->
+        <shared-chevron-down *ngIf="isPanelExpanded == false" data-toggle="collapse" data-target="#collapse"
+          aria-expanded="true" aria-controls="collapse"></shared-chevron-down>
+
+      </button>
+    </div>
+
+    <!-- Form -->
+    <div id="collapse" class="collapse show" aria-labelledby="heading" data-parent="#accordion">
+      <div class="card-body">
+        <form>
+
+          <!-- Git action, categoria, switch branch -->
+          <div class="row" style="align-items: center;">
+
+            <!-- Switch branch -->
+            <div class="col-12 col-md-3 col-lg-2 col-xl-1">
+              <div class="form-group">
+                <label for="branchSwitch">&nbsp;</label>
+                <div class="custom-control custom-switch" id="branchSwitch">
+                  <input type="checkbox" class="custom-control-input" id="isBranch" [(ngModel)]="isBranch"
+                    name="isBranch" />
+                  <label class="custom-control-label" for="isBranch">Branch</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Categoria -->
+            <div class="col-12 col-md-9 col-lg-8 col-xl-9">
+              <div class="form-group">
+                <label for="inputCategory"><span *ngIf="isBranch">Branch - </span>Categoria</label>
+                <input type="text" class="form-control" id="inputCategory" [(ngModel)]="category" name="category"
+                  autocomplete="off" />
+              </div>
+            </div>
+
+            <!-- Git action -->
+            <div class="col-12 col-lg-2">
+              <div class="form-group">
+                <label for="GitActions">Git action</label>
+                <select class="custom-select" id="GitActions" (change)="SelectGitAction($event)">
+                  <option *ngFor="let action of gitActionDatasource" (value)="action.Icon">{{action.Description}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Descrizione -->
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="">Descrizione</label>
+                <input type="text" class="form-control" [(ngModel)]="description" name="description"
+                  autocomplete="off" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Pulsante aggiungi -->
+          <div class="row" style="justify-content: flex-end;">
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+              <button class="btn btn-primary" style="width: 100%" (click)="AddTask()"
+                [disabled]="category == '' || description == ''">
+                aggiungi
+              </button>
+            </div>
+            <br />
+            <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+              <button class="btn btn-link" style="width: 100%; color: #dc3545;" (click)="Reset()"
+                [disabled]="category == '' && description == '' && !isBranch">
+                reset
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
