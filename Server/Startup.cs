@@ -13,7 +13,8 @@ namespace CommitFactory
     public class Startup
     {
         private readonly IConfiguration _config;
-        public Startup(IConfiguration config){
+        public Startup(IConfiguration config)
+        {
             this._config = config;
         }
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -26,6 +27,9 @@ namespace CommitFactory
 
             services.AddSingleton<TasksService>();
             services.AddSingleton<LogService>();
+
+            var IsLogEnabled = this._config.GetValue<string>("IsLogEnabled");
+            LogService.IsLogEnabled = (!string.IsNullOrWhiteSpace(IsLogEnabled) && IsLogEnabled.Equals(CommonConstants.EnableLog));
 
             services.AddCors(options =>
             {

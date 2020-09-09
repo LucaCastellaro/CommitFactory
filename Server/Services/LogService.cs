@@ -18,6 +18,8 @@ namespace CommitFactory.Services
 
     public class LogService : ILogService
     {
+        internal static bool IsLogEnabled { get; set; } = true;
+
         private readonly IMongoCollection<MongoLog> _logs;
 
         public LogService(ITasksDatabaseSettings settings)
@@ -30,6 +32,9 @@ namespace CommitFactory.Services
 
         public void Log(Log log)
         {
+            if(!IsLogEnabled)
+                return;
+
             var newLog = new MongoLog
             {
                 Id = ObjectId.GenerateNewId().ToString(),
@@ -47,6 +52,9 @@ namespace CommitFactory.Services
 
         public void Warning(Log log)
         {
+            if(!IsLogEnabled)
+                return;
+
             var newLog = new MongoLog
             {
                 Id = ObjectId.GenerateNewId().ToString(),
@@ -64,6 +72,9 @@ namespace CommitFactory.Services
 
         public void Error(Log log)
         {
+            if(!IsLogEnabled)
+                return;
+
             var newLog = new MongoLog
             {
                 Id = ObjectId.GenerateNewId().ToString(),
@@ -79,6 +90,6 @@ namespace CommitFactory.Services
             this._logs.InsertOne(newLog);
         }
 
-        public List<MongoLog> GetAll() => this._logs.Find(i => true).ToList();
+        public List<MongoLog> GetAll() => (!IsLogEnabled) ? new List<MongoLog>() : this._logs.Find(i => true).ToList();
     }
 }
