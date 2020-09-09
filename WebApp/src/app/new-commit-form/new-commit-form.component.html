@@ -37,12 +37,19 @@
               </div>
             </div>
 
-            <!-- Categoria -->
+            <!-- Branch & Categoria -->
             <div class="col-12 col-md-9 col-lg-8 col-xl-9">
               <div class="form-group">
                 <label for="inputCategory"><span *ngIf="isBranch">Branch - </span>Categoria</label>
-                <input type="text" class="form-control" id="inputCategory" [(ngModel)]="category" name="category"
-                  autocomplete="off" />
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" id="inputCategory" [(ngModel)]="category" name="category"
+                    autocomplete="off" />
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="ClearCategory()">
+                      <shared-clear></shared-clear>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -64,8 +71,15 @@
             <div class="col-12">
               <div class="form-group">
                 <label for="">Descrizione</label>
-                <input type="text" class="form-control" [(ngModel)]="description" name="description"
-                  autocomplete="off" />
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" [(ngModel)]="description" name="description"
+                    autocomplete="off" />
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="ClearDescription()">
+                        <shared-clear></shared-clear>
+                      </button>
+                    </div>
+                </div>
               </div>
             </div>
           </div>

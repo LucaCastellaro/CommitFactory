@@ -5,7 +5,8 @@ import {
     ChevronDownComponent,
     PlusComponent,
     TrashComponent,
-    ReloadComponent
+    ReloadComponent,
+    ClearComponent
 } from './icons/icons.export';
 
 import { ArrayExtension } from './extensions/array.extension';
@@ -15,8 +16,9 @@ const icons = [
     ChevronDownComponent,
     PlusComponent,
     TrashComponent,
-    ReloadComponent
-]
+    ReloadComponent,
+    ClearComponent
+];
 
 const components = [
     ...icons

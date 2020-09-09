@@ -64,8 +64,16 @@ export class NewCommitFormComponent {
     }
 
     public Reset(): void {
-        this.category = '';
-        this.description = '';
+        this.ClearCategory();
+        this.ClearDescription();
         this.isBranch = false;
+    }
+
+    public ClearCategory(): void {
+        this.category = '';
+    }
+
+    public ClearDescription(): void {
+        this.description = '';
     }
 }
