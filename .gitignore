@@ -1,3 +1,4 @@
 Server/bin
 WebApp/node_modules
 Server/obj
+.vscode
