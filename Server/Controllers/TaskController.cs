@@ -14,11 +14,10 @@ namespace CommitFactory.Controllers
     [Route("api/Mongo")]
     public class TaskController : ControllerBase
     {
-        private readonly string _controllerName = "TaskController";
         private readonly ITasksService _tasksService;
         private readonly ILogService _logService;
 
-        public TaskController(TasksService tasksService, LogService logService)
+        public TaskController(ITasksService tasksService, ILogService logService)
         {
             this._tasksService = tasksService;
             this._logService = logService;
@@ -31,7 +30,7 @@ namespace CommitFactory.Controllers
         {
             var log = new Log
             {
-                ProcedureName = $"{this._controllerName}.GetAllTasks",
+                ProcedureName = $"{this.GetType().Name}.GetAllTasks",
                 ProcedureTimestamp = procedureTimestamp ?? DateTime.Now,
                 Message = "Start"
             };
@@ -57,7 +56,7 @@ namespace CommitFactory.Controllers
         {
             var log = new Log
             {
-                ProcedureName = $"{this._controllerName}.GetLimitedNumberOfTasks",
+                ProcedureName = $"{this.GetType().Name}.GetLimitedNumberOfTasks",
                 ProcedureTimestamp = DateTime.Now,
                 Message = "Start"
             };
@@ -88,7 +87,7 @@ namespace CommitFactory.Controllers
         {
             var log = new Log
             {
-                ProcedureName = $"{this._controllerName}.AddTask",
+                ProcedureName = $"{this.GetType().Name}.AddTask",
                 ProcedureTimestamp = DateTime.Now,
                 Message = "Start"
             };
@@ -110,7 +109,7 @@ namespace CommitFactory.Controllers
             catch (Exception ex)
             {
                 log.Exception = ex.Message;
-                this._logService.Error(log);
+                this._logService.Error(log, ex);
 
                 result = false;
             }
@@ -132,7 +131,7 @@ namespace CommitFactory.Controllers
         {
             var log = new Log
             {
-                ProcedureName = $"{this._controllerName}.DeleteTask",
+                ProcedureName = $"{this.GetType().Name}.DeleteTask",
                 ProcedureTimestamp = DateTime.Now,
                 Message = "Start"
             };
@@ -141,9 +140,10 @@ namespace CommitFactory.Controllers
 
             var result = false;
 
-            var task = JsonConvert.DeserializeObject<Task>(jsonTask);
+            var task = new Task();
             try
             {
+                task = JsonConvert.DeserializeObject<Task>(jsonTask);
                 log.Message = $"Trying to delete 1 task";
                 log.Payload = new List<object>() { task };
                 this._logService.Log(log);
@@ -153,9 +153,8 @@ namespace CommitFactory.Controllers
             }
             catch (Exception ex)
             {
-                log.Exception = ex.Message;
                 log.Payload = new List<object>() { task };
-                this._logService.Error(log);
+                this._logService.Error(log, ex);
 
                 result = false;
             }
@@ -173,7 +172,7 @@ namespace CommitFactory.Controllers
         {
             var log = new Log
             {
-                ProcedureName = $"{this._controllerName}.DeleteOldTasks",
+                ProcedureName = $"{this.GetType().Name}.DeleteOldTasks",
                 ProcedureTimestamp = DateTime.Now,
                 Message = "Start"
             };
@@ -194,16 +193,14 @@ namespace CommitFactory.Controllers
                 {
                     this._tasksService.DeleteOldTasks(date);
                     log.Message = $"Deleted {tasks} document(s)";
+                    this._logService.Log(log);
                 }
-
-                this._logService.Log(log);
 
                 result = true;
             }
             catch (Exception ex)
             {
-                log.Exception = ex.Message;
-                this._logService.Error(log);
+                this._logService.Error(log, ex);
 
                 result = false;
             }

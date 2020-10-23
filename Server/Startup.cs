@@ -6,7 +6,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using CommitFactory.Persistence.Models;
 using CommitFactory.Services;
-using System;
 
 namespace CommitFactory
 {
@@ -25,15 +24,19 @@ namespace CommitFactory
 
             services.AddSingleton<ITasksDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TasksDatabaseSettings>>().Value);
 
-            services.AddSingleton<TasksService>();
-            services.AddSingleton<LogService>();
+            services.AddSingleton<ITasksService, TasksService>();
+            services.AddSingleton<ILogService, LogService>();
 
-            var IsLogEnabled = this._config.GetValue<string>("IsLogEnabled");
-            LogService.IsLogEnabled = (!string.IsNullOrWhiteSpace(IsLogEnabled) && IsLogEnabled.Equals(CommonConstants.EnableLog));
+#if DEBUG
+            LogService.IsLogEnabled = true;
+#else
+            var runtimeConfiguration = this._config.GetValue<string>(CommonConstants.RuntimeConfiguration);
+            LogService.IsLogEnabled = (!string.IsNullOrWhiteSpace(runtimeConfiguration) && runtimeConfiguration.Contains(CommonConstants.EnableLog));
+#endif
 
             services.AddCors(options =>
             {
-                options.AddPolicy("Policy",
+                options.AddPolicy(CommonConstants.Policy,
                     builder =>
                     {
                         builder

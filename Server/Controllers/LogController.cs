@@ -6,17 +6,15 @@ using CommitFactory.Persistence.Models;
 using CommitFactory.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 [ApiController]
 [EnableCors("Policy")]
 [Route("api/Log")]
 public class LogController : ControllerBase
 {
-    private readonly string _controllerName = "LogController";
     private readonly ILogService _logService;
 
-    public LogController(LogService logService)
+    public LogController(ILogService logService)
     {
         this._logService = logService;
     }
@@ -26,7 +24,7 @@ public class LogController : ControllerBase
     {
         var log = new Log
         {
-            ProcedureName = $"{_controllerName}.GetAllLogs",
+            ProcedureName = $"{this.GetType().Name}.GetAllLogs",
             ProcedureTimestamp = procedureTimestamp ?? DateTime.Now,
             Message = "Start"
         };
@@ -61,7 +59,7 @@ public class LogController : ControllerBase
     {
         var log = new Log
         {
-            ProcedureName = $"{this._controllerName}.GetLimitedNumberOfLogs",
+            ProcedureName = $"{this.GetType().Name}.GetLimitedNumberOfLogs",
             ProcedureTimestamp = DateTime.Now,
             Message = "Start"
         };

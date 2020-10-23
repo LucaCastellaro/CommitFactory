@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace CommitFactory
@@ -15,9 +14,10 @@ namespace CommitFactory
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults((System.Action<IWebHostBuilder>)(webBuilder =>
                 {
+                    var runtimeConfiguration = string.Join(CommonConstants.OptionSeparator, args);
                     webBuilder
                         .UseStartup<Startup>()
-                        .UseSetting("IsLogEnabled", args.Length > 0 ? args[0] : null);
+                        .UseSetting(CommonConstants.RuntimeConfiguration, args.Length > 0 ? runtimeConfiguration : null);
                 }));
     }
 }
